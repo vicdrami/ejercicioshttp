@@ -1,0 +1,16 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Preparar examen Flutter",
+      "done": false,
+      "priority": 3
+    },
+    {
+      "id": "2",
+      "title": "Corregir prácticas",
+      "done": true,
+      "priority": 2
+    }
+  ]
+}
