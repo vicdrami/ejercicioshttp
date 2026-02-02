@@ -1,19 +1,54 @@
+import 'package:ejercicioshttp/models/task.dart';
+import 'package:ejercicioshttp/provider/tasks_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => TasksService(),
+      child: const TaskApp(),
+    ),
+  );
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class TaskApp extends StatelessWidget {
+  const TaskApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+      title: 'Flutter Products',
+      debugShowCheckedModeBanner: false,
+      home: const Tasks(),
+    );
+  }
+}
+
+class Tasks extends StatelessWidget {
+  const Tasks({super.key});
+
+  Widget build(BuildContext context){
+    final service = context.watch<TasksService>();
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Tareas')),
+      body: ListView.builder(
+        itemCount: service.tasks.length,
+        itemBuilder: (context, index) {
+          final Task task = service.tasks[index];
+          return ListTile(
+            title: Text(task.title),
+            subtitle: Text(task.id),
+            trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(task.done.toString()),
+              Text(task.priorty.toString()),
+            ],
+            ),
+          );
+        },
       ),
     );
   }
