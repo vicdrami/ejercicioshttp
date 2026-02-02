@@ -34,4 +34,28 @@ class TasksService extends ChangeNotifier {
       debugPrint('Error: $e');
     }
   }
+
+  Future <void> createTask(Task task) async {
+    try {
+      final uri = Uri.parse('http://localhost:3000/tasks');
+
+      final response = await http.post(
+        uri, 
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(task.toJson())).timeout(const Duration(seconds: 3));
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final json = jsonDecode(response.body);
+        final createdTask = Task.fromJson(json);
+
+        tasks.add(createdTask);
+        await loadTasks();
+      } else {
+        debugPrint('Error: ${response.statusCode}');
+      }
+
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
 }

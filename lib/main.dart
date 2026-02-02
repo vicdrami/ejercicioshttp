@@ -32,14 +32,28 @@ class Tasks extends StatelessWidget {
     final service = context.watch<TasksService>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Tareas')),
+      appBar: AppBar(
+        title: const Text('Tareas'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () async {
+              final newTask = Task(
+                title: 'Nueva tarea',
+                done: false,
+                priorty: 1,
+              );
+            },
+          )
+        ],
+      ),
       body: ListView.builder(
         itemCount: service.tasks.length,
         itemBuilder: (context, index) {
           final Task task = service.tasks[index];
           return ListTile(
             title: Text(task.title),
-            subtitle: Text(task.id),
+            subtitle: Text(task.id.toString()),
             trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
